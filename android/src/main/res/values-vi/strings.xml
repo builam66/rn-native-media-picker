@@ -1,0 +1,16 @@
+<resources>
+    <string name="back">Quay lại</string>
+    <string name="done">Xong</string>
+    <string name="all_media">Tất cả</string>
+    <string name="today">Hôm nay</string>
+
+    <string name="folder_image_desc">Folder Image</string>
+    <string name="pick_media">Pick Media</string>
+
+    <string-array name="folder_names">
+        <item>All Media</item>
+    </string-array>
+</resources>
+
+
+

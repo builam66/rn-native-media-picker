@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="com.rnmediapicker">
+  <application>
+    <activity tools:replace="android:theme" android:theme="@style/Theme.MediaPicker" android:name=".library.LibraryActivity"
+      android:exported="false">
+    </activity>
+  </application>
+</manifest>

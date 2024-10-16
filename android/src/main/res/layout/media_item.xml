@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_margin="2dp">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="130dp">
+
+    <ImageView
+      android:id="@+id/media_image"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scaleType="centerCrop"
+      android:background="?attr/selectableItemBackground" />
+
+    <ImageView
+      android:id="@+id/video_icon"
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:visibility="gone"
+      android:layout_alignParentBottom="true"
+      android:src="@drawable/selector_check_box"/>
+
+    <TextView
+      android:id="@+id/video_duration"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentEnd="true"
+      android:textColor="@android:color/white"
+      android:padding="2dp"
+      android:text="00:00"
+      android:visibility="gone"/>
+
+    <ImageView
+      android:id="@+id/media_overlay"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="#80000000"
+      android:visibility="gone"/>
+
+  </RelativeLayout>
+
+  <CheckBox
+    android:id="@+id/check_icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentTop="true"
+    android:layout_margin="4dp"
+    android:button="@drawable/selector_check_box"
+    android:paddingStart="5dp"
+    android:textSize="13sp"/>
+</RelativeLayout>
