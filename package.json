@@ -1,0 +1,77 @@
+{
+  "name": "react-native-media-picker",
+  "version": "0.1.0",
+  "description": "A React Native library for picking media (images and videos) from the native media library.",
+  "source": "./src/index.tsx",
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "*.podspec",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
+  "author": "Lam Bui Phuc (https://github.com/builam66)",
+  "homepage": "https://github.com/builam66/react-native-media-picker",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-native start",
+    "example": "yarn --cwd example",
+    "prepare": "bob build",
+    "ci:publish": "yarn semantic-release"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-media-picker",
+    "react",
+    "native",
+    "media",
+    "picker",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/builam66/react-native-media-picker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/builam66/react-native-media-picker/issues"
+  },
+  "publishConfig": {
+    "@builam66:registry": "https://npm.pkg.github.com"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "react-native-builder-bob": "0.30.2",
+    "@semantic-release/git": "10.0.1",
+    "@types/react": "18.2.13",
+    "@types/react-native": "0.72.2",
+    "semantic-release": "21.0.5",
+    "typescript": "5.2.2"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "typescript",
+      {
+        "project": "tsconfig.build.json",
+        "esm": true
+      }
+    ]
+  }
+}
