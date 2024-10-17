@@ -1,4 +1,4 @@
-# react-native-media-picker
+# rn-native-media-picker
 
 A React Native library for picking media (images and videos) from the native media library.
 
@@ -11,14 +11,14 @@ The first version is a simple Android function that requests permissions and sel
 ## Installation
 
 ```sh
-npm install react-native-media-picker
+npm install rn-native-media-picker
 ```
 
 ## Usage
 
 
 ```js
-import { launchLibrary, IOptions } from 'react-native-media-picker';
+import { launchLibrary, IOptions } from 'rn-native-media-picker';
 
 // ...
 

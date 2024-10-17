@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
-import { multiply, launchLibrary, IOptions } from 'react-native-media-picker';
+import { multiply, launchLibrary, IOptions } from 'rn-native-media-picker';
 
 export default function App() {
   const [result, setResult] = useState<number | undefined>();

@@ -34,7 +34,7 @@ jobs:
           yarn prepare
 
       - name: Publish to NPM
-        if: github.repository == 'builam66/react-native-media-picker' && github.ref == 'refs/heads/main'
+        if: github.repository == 'builam66/rn-native-media-picker' && github.ref == 'refs/heads/main'
         run: |
           yarn ci:publish
         env:

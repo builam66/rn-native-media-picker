@@ -1,5 +1,5 @@
 {
-  "name": "react-native-media-picker",
+  "name": "rn-native-media-picker",
   "version": "1.0.0",
   "description": "A React Native library for picking media (images and videos) from the native media library.",
   "source": "./src/index.tsx",
@@ -25,7 +25,7 @@
     "!**/.*"
   ],
   "author": "Lam Bui Phuc (https://github.com/builam66)",
-  "homepage": "https://github.com/builam66/react-native-media-picker",
+  "homepage": "https://github.com/builam66/rn-native-media-picker",
   "license": "MIT",
   "scripts": {
     "start": "react-native start",
@@ -35,7 +35,7 @@
   },
   "keywords": [
     "react-native",
-    "react-native-media-picker",
+    "rn-native-media-picker",
     "react",
     "native",
     "media",
@@ -44,10 +44,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/builam66/react-native-media-picker.git"
+    "url": "https://github.com/builam66/rn-native-media-picker.git"
   },
   "bugs": {
-    "url": "https://github.com/builam66/react-native-media-picker/issues"
+    "url": "https://github.com/builam66/rn-native-media-picker/issues"
   },
   "publishConfig": {
     "@builam66:registry": "https://npm.pkg.github.com"
