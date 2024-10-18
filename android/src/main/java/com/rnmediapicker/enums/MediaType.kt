@@ -1,4 +1,4 @@
-package com.rnmediapicker.library
+package com.rnmediapicker.enums
 
 /**
  * Enum class representing the type of media.

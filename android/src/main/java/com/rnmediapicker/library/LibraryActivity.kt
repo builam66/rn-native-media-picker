@@ -47,7 +47,9 @@ class LibraryActivity : AppCompatActivity() {
           mediaAdapter.updateMediaItems(mediaList)
         }
       } else {
-        Log.e("Permission", "Permission denied!")
+        Log.e("PERMISSIONS", "Permission denied!")
+        setResult(Activity.RESULT_CANCELED)
+        finish()
         // showPermissionDeniedDialog()
       }
     }
@@ -70,7 +72,7 @@ class LibraryActivity : AppCompatActivity() {
     // initialize the adapter and click
     viewBinding.mediaRecyclerView.layoutManager = GridLayoutManager(this, 3)
     mediaAdapter = MediaAdapter(this, emptyList(), { mediaItem ->
-      Log.d("MediaAdapter", "Click" + mediaItem.uri)
+      Log.d("CLICK", mediaItem.uri.toString())
     }, { selectedCount ->
       // Update the done button and selected count when the selection changes
       updateDoneButton(selectedCount)
@@ -87,6 +89,7 @@ class LibraryActivity : AppCompatActivity() {
 
     // initialize back button click
     viewBinding.tvBack.setOnClickListener {
+      setResult(Activity.RESULT_CANCELED)
       finish()
     }
 
@@ -101,7 +104,7 @@ class LibraryActivity : AppCompatActivity() {
       val selectedItemsArrayList = ArrayList(selectedItems)
 
       // Log the selected items for debugging
-      Log.e(TAG, "onCreate: $selectedItemsArrayList")
+      Log.e(TAG, "ITEMS: $selectedItemsArrayList")
 
       // Create an intent and put the selected items
       val resultIntent = Intent().apply {
@@ -125,10 +128,10 @@ class LibraryActivity : AppCompatActivity() {
       requestPermissions()
     }
 
-//    viewBinding.selectedFolderName.setOnClickListener {
-//      showFolderSelectionDialog()
-//    }
-//    viewBinding.selectedFolderName.text = selectedFolderName
+    // viewBinding.selectedFolderName.setOnClickListener {
+    //   showFolderSelectionDialog()
+    // }
+    // viewBinding.selectedFolderName.text = selectedFolderName
 
     viewBinding.mediaRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
       override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

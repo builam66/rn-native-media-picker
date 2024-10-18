@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import type { IOptions } from './type';
+import type { IOptions, IResponse } from './type';
 
 const LINKING_ERROR =
   `The package 'rn-native-media-picker' doesn't seem to be linked. Make sure: \n\n` +
@@ -22,6 +22,6 @@ export function multiply(a: number, b: number): Promise<number> {
   return RnMediaPicker.multiply(a, b);
 }
 
-export function launchLibrary(options: IOptions): Promise<string> {
+export function launchLibrary(options: IOptions): Promise<IResponse> {
   return RnMediaPicker.launchLibrary(options);
 }

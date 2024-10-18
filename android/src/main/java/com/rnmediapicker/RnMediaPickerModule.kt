@@ -10,8 +10,10 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableArray
+import com.facebook.react.bridge.WritableMap
 import com.rnmediapicker.constants.DefaultConstants
 import com.rnmediapicker.constants.IntentConstants
+import com.rnmediapicker.constants.ResultConstants
 import com.rnmediapicker.library.LibraryActivity
 import com.rnmediapicker.library.MediaItem
 
@@ -33,7 +35,7 @@ class RnMediaPickerModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun launchLibrary(libraryOptions: ReadableMap, resultPromise: Promise) {
-    val currentActivity = currentActivity ?: return resultPromise.reject("ActivityError", "Current Activity is null")
+    val currentActivity = currentActivity ?: return resultPromise.resolve(convertResponse(ResultConstants.LIBRARY_NOT_LAUNCH, null))
 
     currentActivity.let { activity ->
       libraryPickerPromise = resultPromise
@@ -47,17 +49,16 @@ class RnMediaPickerModule(reactContext: ReactApplicationContext) :
       if (libraryPickerPromise == null) return
 
       if (requestCode != LAUNCH_LIBRARY_REQUEST) {
-        libraryPickerPromise?.resolve("Not launch")
+        libraryPickerPromise?.resolve(convertResponse(ResultConstants.LIBRARY_NOT_LAUNCH, null))
         libraryPickerPromise = null
         return
       }
 
       if (resultCode == Activity.RESULT_OK && data != null) {
         val selectedItems: ArrayList<MediaItem> = data.getParcelableArrayListExtra(IntentConstants.SELECTED_ITEMS) ?: arrayListOf()
-        val response = convertMediaItemsToWritableArray(selectedItems)
-        libraryPickerPromise?.resolve(response)
+        libraryPickerPromise?.resolve(convertResponse(ResultConstants.SUCCESS, selectedItems))
       } else {
-        libraryPickerPromise?.resolve("Null")
+        libraryPickerPromise?.resolve(convertResponse(ResultConstants.OTHER_ERROR, null))
       }
       libraryPickerPromise = null
     }
@@ -90,14 +91,18 @@ class RnMediaPickerModule(reactContext: ReactApplicationContext) :
     )
   }
 
-  private fun convertMediaItemsToWritableArray(mediaItems: List<MediaItem>): WritableArray {
-    return Arguments.createArray().apply {
-      mediaItems.forEach { item ->
+  private fun convertResponse(resultCode: Int, mediaItems: List<MediaItem>?): WritableMap {
+    val assets = Arguments.createArray().apply {
+      mediaItems?.forEach { item ->
         pushMap(Arguments.createMap().apply {
           putString("mediaUri", item.uri.toString())
           putString("mediaType", item.type.toString())
         })
       }
+    }
+    return Arguments.createMap().apply {
+      putInt("resultCode", resultCode)
+      putArray("assets", assets)
     }
   }
 

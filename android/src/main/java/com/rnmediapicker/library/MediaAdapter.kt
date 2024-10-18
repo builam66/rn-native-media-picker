@@ -6,10 +6,10 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.rnmediapicker.databinding.MediaItemBinding
+import com.rnmediapicker.enums.MediaType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -143,7 +143,7 @@ class MediaAdapter(
         if (binding.checkIcon.isEnabled) {
           mediaItem.uri?.let { it1 -> toggleSelection(it1) }
         } else {
-          Toast.makeText(context, "You can only select up to $maxSelection items.", Toast.LENGTH_SHORT).show()
+          // Toast.makeText(context, "You can only select up to $maxSelection items.", Toast.LENGTH_SHORT).show()
         }
       }
 
@@ -152,7 +152,7 @@ class MediaAdapter(
           mediaItem.uri?.let { it1 -> toggleSelection(it1) }
           onItemSelected(mediaItem)
         } else {
-          Toast.makeText(context, "You can only select up to $maxSelection items.", Toast.LENGTH_SHORT).show()
+          // Toast.makeText(context, "You can only select up to $maxSelection items.", Toast.LENGTH_SHORT).show()
         }
       }
     }
@@ -211,7 +211,7 @@ class MediaAdapter(
           if (selectedItems.size < maxSelection) {
             selectedItems.add(uri)
           } else {
-            Toast.makeText(context,"You can only select up to $maxSelection items.", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context,"You can only select up to $maxSelection items.", Toast.LENGTH_SHORT).show()
             return
           }
         }

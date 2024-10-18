@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.net.Uri
 import android.provider.MediaStore
 import com.rnmediapicker.constants.DefaultConstants
+import com.rnmediapicker.enums.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
