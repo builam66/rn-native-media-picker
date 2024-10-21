@@ -2,7 +2,7 @@
 
 A React Native library for picking media (images and videos) from the native media library.
 
-It can handle the new media picker on Android 14. If you think it is helpful, give me a star and I will improve it in the future. Thank you so much!
+It can handle the new media picker on Android 14 (READ_MEDIA_VISUAL_USER_SELECTED). If you think it is helpful, give me a star and I will improve it in the future. Thank you so much!
 
 ## Notes
 

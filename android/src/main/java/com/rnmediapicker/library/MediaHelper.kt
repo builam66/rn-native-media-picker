@@ -1,14 +1,17 @@
 package com.rnmediapicker.library
 
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import com.rnmediapicker.R
 import com.rnmediapicker.constants.DefaultConstants
 import com.rnmediapicker.enums.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MediaHelper(private val contentResolver: ContentResolver) {
+class MediaHelper(private val context: Context) {
+  private val contentResolver: ContentResolver = context.contentResolver
   /**
    * Loads a list of folders from the device's media store.
    *
@@ -22,8 +25,8 @@ class MediaHelper(private val contentResolver: ContentResolver) {
     val folderList = mutableListOf<MediaFolderItem>()
     val allMediaFolder = getFirstMediaUri()?.let {
       MediaFolderItem(
-        folderName = "AllMedia",
-        folderId = "all_media",
+        folderName = context.getString(R.string.all_media),
+        folderId = DefaultConstants.ALL_MEDIA_FOLDER_ID,
         folderPath = "",
         folderUri = it,
         mediaCount = getAllMediaCount()
@@ -32,8 +35,8 @@ class MediaHelper(private val contentResolver: ContentResolver) {
 
     val allVideosFolder = getFirstVideoUri()?.let {
       MediaFolderItem(
-        folderName = "AllVideos",
-        folderId = "all_videos",
+        folderName = context.getString(R.string.all_videos),
+        folderId = DefaultConstants.ALL_VIDEOS_FOLDER_ID,
         folderPath = "",
         folderUri = it,
         mediaCount = getAllVideosCount()
@@ -99,11 +102,11 @@ class MediaHelper(private val contentResolver: ContentResolver) {
 
       folderList.addAll(folderMap.values)
 
-      // for (mediaFolderItem in folderList) {
-      //   if (mediaFolderItem.folderId != "all_media" && mediaFolderItem.folderId != "all_videos") {
-      //     mediaFolderItem.mediaCount = getMediaCount(mediaFolderItem.folderId)
-      //   }
-      // }
+      //for (mediaFolderItem in folderList) {
+      //  if (mediaFolderItem.folderId != DefaultConstants.ALL_MEDIA_FOLDER_ID && mediaFolderItem.folderId != DefaultConstants.ALL_VIDEOS_FOLDER_ID) {
+      //    mediaFolderItem.mediaCount = getMediaCount(mediaFolderItem.folderId)
+      //  }
+      //}
     }
 
     return@withContext folderList
@@ -127,14 +130,14 @@ class MediaHelper(private val contentResolver: ContentResolver) {
     val queryUri = MediaStore.Files.getContentUri("external")
 
     when (folderId) {
-      "all_media" -> { // Load all media (images and videos)
+      DefaultConstants.ALL_MEDIA_FOLDER_ID -> { // Load all media (images and videos)
         selection = "${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
         selectionArgs = arrayOf(
           MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
           MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
         )
       }
-      "all_videos" -> { // Load videos
+      DefaultConstants.ALL_VIDEOS_FOLDER_ID -> { // Load videos
         selection = "${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
         selectionArgs = arrayOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString())
       }

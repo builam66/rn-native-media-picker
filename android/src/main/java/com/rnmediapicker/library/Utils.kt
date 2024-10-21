@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.provider.MediaStore
+import com.rnmediapicker.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -15,9 +16,8 @@ import java.util.Date
 import java.util.Locale
 
 object Utils {
-
-  suspend fun getMediaCreationDate(contentResolver: ContentResolver, uri: Uri): String = withContext(
-    Dispatchers.IO) {
+  suspend fun getMediaCreationDate(context: Context, uri: Uri): String = withContext(Dispatchers.IO) {
+    val contentResolver: ContentResolver = context.contentResolver
     val today = Date()
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val displayFormat = SimpleDateFormat("MMM d, yyyy", Locale.getDefault())
@@ -35,8 +35,8 @@ object Utils {
         val todayStr = dateFormat.format(today)
 
         date = when (mediaDateStr) {
-          todayStr -> "Today"
-          dateFormat.format(Date(today.time - 86400000)) -> "Yesterday" // 86400000ms = 1 day
+          todayStr -> context.getString(R.string.today)
+          dateFormat.format(Date(today.time - 86400000)) -> context.getString(R.string.yesterday) // 86400000ms = 1 day
           else -> displayFormat.format(mediaDate)
         }
       }

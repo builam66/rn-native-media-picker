@@ -3,13 +3,10 @@
     <string name="done">Done</string>
     <string name="all_media">All media</string>
     <string name="today">Today</string>
-
-    <string name="folder_image_desc">Folder Image</string>
-    <string name="pick_media">Pick Media</string>
-
-    <string-array name="folder_names">
-        <item>All Media</item>
-    </string-array>
+    <string name="all_videos">All videos</string>
+    <string name="default_folder_name">All media</string>
+    <string name="select_folder">Select folder</string>
+    <string name="yesterday">Yesterday</string>
 </resources>
 
 

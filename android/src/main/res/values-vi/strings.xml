@@ -3,13 +3,10 @@
     <string name="done">Xong</string>
     <string name="all_media">Tất cả</string>
     <string name="today">Hôm nay</string>
-
-    <string name="folder_image_desc">Folder Image</string>
-    <string name="pick_media">Pick Media</string>
-
-    <string-array name="folder_names">
-        <item>All Media</item>
-    </string-array>
+    <string name="all_videos">Tất cả đoạn phim</string>
+    <string name="default_folder_name">Tất cả</string>
+    <string name="select_folder">Chọn thư mục</string>
+    <string name="yesterday">Hôm qua</string>
 </resources>
 
 
