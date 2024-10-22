@@ -10,8 +10,16 @@ import com.rnmediapicker.enums.MediaType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MediaHelper(private val context: Context) {
+class MediaHelper(private val context: Context, private val mediaType: String) {
   private val contentResolver: ContentResolver = context.contentResolver
+  private val mediaTypeSelectionArgs = when (mediaType) {
+    DefaultConstants.MEDIA_TYPE_IMAGE -> arrayOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString())
+    DefaultConstants.MEDIA_TYPE_VIDEO -> arrayOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString())
+    else -> arrayOf(
+      MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
+      MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
+    )
+  }
   /**
    * Loads a list of folders from the device's media store.
    *
@@ -52,10 +60,7 @@ class MediaHelper(private val context: Context) {
     )
     val selection =
       "${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
-    val selectionArgs = arrayOf(
-      MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-      MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
-    )
+    val selectionArgs = mediaTypeSelectionArgs
     val sortOrder =
       "${MediaStore.Files.FileColumns.BUCKET_ID} ASC, ${MediaStore.Files.FileColumns.DATE_ADDED} DESC"
     val queryUri = MediaStore.Files.getContentUri("external")
@@ -132,10 +137,7 @@ class MediaHelper(private val context: Context) {
     when (folderId) {
       DefaultConstants.ALL_MEDIA_FOLDER_ID -> { // Load all media (images and videos)
         selection = "${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
-        selectionArgs = arrayOf(
-          MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-          MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
-        )
+        selectionArgs = mediaTypeSelectionArgs
       }
       DefaultConstants.ALL_VIDEOS_FOLDER_ID -> { // Load videos
         selection = "${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
@@ -144,11 +146,7 @@ class MediaHelper(private val context: Context) {
       else -> { // Load media files specific to the given folder ID
         selection =
           "${MediaStore.Files.FileColumns.BUCKET_ID}=? AND (${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?)"
-        selectionArgs = arrayOf(
-          folderId,
-          MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-          MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
-        )
+        selectionArgs = arrayOf(folderId) + mediaTypeSelectionArgs
       }
     }
 
@@ -168,12 +166,12 @@ class MediaHelper(private val context: Context) {
 
         // Construct the content URI based on MIME type
         val contentUri = when {
-          mimeType.startsWith(DefaultConstants.IMAGE) -> Uri.withAppendedPath(
+          mimeType.startsWith(DefaultConstants.MEDIA_TYPE_IMAGE) -> Uri.withAppendedPath(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             id.toString()
           )
 
-          mimeType.startsWith(DefaultConstants.VIDEO) -> Uri.withAppendedPath(
+          mimeType.startsWith(DefaultConstants.MEDIA_TYPE_VIDEO) -> Uri.withAppendedPath(
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
             id.toString()
           )
@@ -183,7 +181,7 @@ class MediaHelper(private val context: Context) {
 
         // Determine the media type
         val mediaType =
-          if (mimeType.startsWith(DefaultConstants.IMAGE)) MediaType.IMAGE else MediaType.VIDEO
+          if (mimeType.startsWith(DefaultConstants.MEDIA_TYPE_IMAGE)) MediaType.IMAGE else MediaType.VIDEO
 
         // Add the media item to the list
         mediaList.add(MediaItem(contentUri, mediaType))
@@ -223,10 +221,7 @@ class MediaHelper(private val context: Context) {
     // Define the selection criteria to filter for image and video files
     val selection =
       "${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
-    val selectionArgs = arrayOf(
-      MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-      MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
-    )
+    val selectionArgs = mediaTypeSelectionArgs
 
     // Define the query URI for the external content
     val queryUri = MediaStore.Files.getContentUri("external")
@@ -266,10 +261,7 @@ class MediaHelper(private val context: Context) {
   private suspend fun getFirstMediaUri(): Uri? {
     val selection =
       "${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
-    val selectionArgs = arrayOf(
-      MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-      MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
-    )
+    val selectionArgs = mediaTypeSelectionArgs
     return queryFirstMediaUri(selection, selectionArgs)
   }
 
@@ -281,10 +273,7 @@ class MediaHelper(private val context: Context) {
 //    )
 //    val selection =
 //      "${MediaStore.Files.FileColumns.MEDIA_TYPE}=? OR ${MediaStore.Files.FileColumns.MEDIA_TYPE}=?"
-//    val selectionArgs = arrayOf(
-//      MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE.toString(),
-//      MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString()
-//    )
+//    val selectionArgs = mediaTypeSelectionArgs
 //    val sortOrder = "${MediaStore.Files.FileColumns.DATE_ADDED} DESC"
 //    val queryUri = MediaStore.Files.getContentUri("external")
 //
@@ -300,12 +289,12 @@ class MediaHelper(private val context: Context) {
 //        val mimeType = it.getString(mimeTypeColumn)
 //
 //        return@withContext when {
-//          mimeType.startsWith(DefaultConstants.IMAGE) -> Uri.withAppendedPath(
+//          mimeType.startsWith(DefaultConstants.MEDIA_TYPE_IMAGE) -> Uri.withAppendedPath(
 //            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
 //            id.toString()
 //          )
 //
-//          mimeType.startsWith(DefaultConstants.VIDEO) -> Uri.withAppendedPath(
+//          mimeType.startsWith(DefaultConstants.MEDIA_TYPE_VIDEO) -> Uri.withAppendedPath(
 //            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
 //            id.toString()
 //          )
@@ -368,11 +357,11 @@ class MediaHelper(private val context: Context) {
           val mimeType = it.getString(mimeTypeColumn)
 
           when {
-            mimeType.startsWith(DefaultConstants.IMAGE) -> Uri.withAppendedPath(
+            mimeType.startsWith(DefaultConstants.MEDIA_TYPE_IMAGE) -> Uri.withAppendedPath(
               MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
               id.toString()
             )
-            mimeType.startsWith(DefaultConstants.VIDEO) -> Uri.withAppendedPath(
+            mimeType.startsWith(DefaultConstants.MEDIA_TYPE_VIDEO) -> Uri.withAppendedPath(
               MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
               id.toString()
             )

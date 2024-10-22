@@ -1,14 +1,7 @@
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="gray">#808080</color>
-
-    <color name="primaryColor">#00808B</color>
-    <color name="primaryVariantColor">#4682B4</color>
-    <color name="onPrimaryColor">#FFFFFF</color>
     <color name="backgroundColor">#000000</color>
-    <color name="textColor">#FFFFFFFF</color>
-
-    <color name="active">#24bfdc</color>
-    <color name="inactive">#646464</color>
+    <color name="textColor">#FFFFFF</color>
 </resources>

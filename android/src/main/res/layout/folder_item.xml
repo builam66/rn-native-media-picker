@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/primaryColor"
+            android:textColor="@color/white"
             android:includeFontPadding="false"
             android:text="@string/default_folder_name"
             android:ellipsize="end"

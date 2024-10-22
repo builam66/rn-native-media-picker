@@ -6,7 +6,7 @@ import com.rnmediapicker.constants.DefaultConstants
 
 data class RnMediaPickerOptions(val mediaType: String, val isMultipleSelection: Boolean, val maxSelection: Int) : Parcelable {
   constructor(parcel: Parcel) : this(
-    parcel.readString() ?: DefaultConstants.ALL,
+    parcel.readString() ?: DefaultConstants.MEDIA_TYPE_ALL,
     parcel.readByte() != 0.toByte(),
     parcel.readInt()
   )

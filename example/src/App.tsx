@@ -10,7 +10,7 @@ export default function App() {
     const options: IOptions = {
       isMultipleSelection: false,
       maxSelection: 1,
-      mediaType: 'image',
+      mediaType: 'all',
     };
     launchLibrary(options).then((results: IResponse) => {
       console.log('results', results);

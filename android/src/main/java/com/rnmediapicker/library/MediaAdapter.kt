@@ -22,6 +22,11 @@ class MediaAdapter(
   private val onSelectionChanged: (Int) -> Unit
 ) : RecyclerView.Adapter<MediaAdapter.MediaViewHolder>() {
 
+  companion object {
+    private const val THUMBNAIL_SIZE = 300
+    private const val MAX_SELECTION_DEFAULT = 10
+  }
+
   private val selectedItems = mutableSetOf<Uri>()
   private val thumbnailCache = mutableMapOf<Uri, Bitmap?>()
   private val videoDurationCache = mutableMapOf<Uri, String>()
@@ -37,7 +42,7 @@ class MediaAdapter(
     val mediaItem = mediaList[position]
     holder.bind(mediaItem)
 
-    val isItemSelectable = selectedItems.size < 10 || selectedItems.contains(mediaItem.uri)
+    val isItemSelectable = selectedItems.size < MAX_SELECTION_DEFAULT || selectedItems.contains(mediaItem.uri)
 
     holder.itemView.isClickable = isItemSelectable
     holder.itemView.isEnabled = isItemSelectable
@@ -65,54 +70,6 @@ class MediaAdapter(
   inner class MediaViewHolder(private val binding: MediaItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    /**
-     * Binds a media item to the ViewHolder and sets up click listeners.
-     * @param mediaItem The media item to bind.
-     */
-
-    /*
-            fun bind(mediaItem: MediaItem) {
-                if (mediaItem.type == MediaType.VIDEO) {
-                    binding.videoIcon.visibility = View.VISIBLE
-                    binding.videoDuration.visibility = View.VISIBLE
-                    mediaItem.uri?.let { loadVideoThumbnail(it) }
-                    mediaItem.uri?.let { loadVideoDuration(it) }
-                } else {
-                    Glide.with(context)
-                        .load(mediaItem.uri)
-                        .override(300, 300)
-                        .into(binding.mediaImage)
-                    binding.videoIcon.visibility = View.GONE
-                    binding.videoDuration.visibility = View.GONE
-                }
-
-                // Determine if the item should be selectable
-                val isItemSelectable =
-                    isMultiSelectMode || selectedItems.isEmpty() || selectedItems.contains(mediaItem.uri)
-
-                binding.checkIcon.isClickable = isItemSelectable
-                binding.checkIcon.isEnabled = isItemSelectable
-                binding.checkIcon.alpha = if (isItemSelectable) 1.0f else 0.5f
-
-                // Update the checkbox state based on the current selection
-                updateSelectionState(mediaItem.uri)
-
-                // Handle checkbox click
-                binding.checkIcon.setOnClickListener {
-                    if (isItemSelectable) {
-                        mediaItem.uri?.let { it1 -> toggleSelection(it1) }
-                    }
-                }
-
-                binding.root.setOnClickListener {
-                    if (isItemSelectable) {
-                        mediaItem.uri?.let { it1 -> toggleSelection(it1) }
-                        onItemSelected(mediaItem)
-                    }
-                }
-            }
-    */
-
     fun bind(mediaItem: MediaItem) {
       if (mediaItem.type == MediaType.VIDEO) {
         binding.videoIcon.visibility = View.VISIBLE
@@ -122,7 +79,7 @@ class MediaAdapter(
       } else {
         Glide.with(context)
           .load(mediaItem.uri)
-          .override(300, 300)
+          .override(THUMBNAIL_SIZE, THUMBNAIL_SIZE)
           .into(binding.mediaImage)
         binding.videoIcon.visibility = View.GONE
         binding.videoDuration.visibility = View.GONE

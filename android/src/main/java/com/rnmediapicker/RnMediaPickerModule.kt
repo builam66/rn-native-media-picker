@@ -79,7 +79,7 @@ class RnMediaPickerModule(reactContext: ReactApplicationContext) :
   private fun mapToPickerOptions(options: ReadableMap): RnMediaPickerOptions {
     val (mediaType, isMultipleSelection, maxSelection) = options.run {
       Triple(
-        getString(DefaultConstants.MEDIA_TYPE) ?: DefaultConstants.ALL,
+        getString(DefaultConstants.MEDIA_TYPE) ?: DefaultConstants.MEDIA_TYPE_ALL,
         getBoolean(DefaultConstants.IS_MULTIPLE_SELECTION),
         getInt(DefaultConstants.MAX_SELECTION)
       )

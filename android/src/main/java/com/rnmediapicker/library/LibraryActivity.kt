@@ -53,7 +53,6 @@ class LibraryActivity : AppCompatActivity() {
         Log.e("PERMISSIONS", "Permission denied!")
         setResult(Activity.RESULT_CANCELED)
         finish()
-        // showPermissionDeniedDialog()
       }
     }
   private val arrowDownString: String = " \u25BE"
@@ -62,6 +61,7 @@ class LibraryActivity : AppCompatActivity() {
   private var maxSelection: Int = 1
   private var selectedFolderId: String = DefaultConstants.ALL_MEDIA_FOLDER_ID
   private var selectedFolderName: String = arrowDownString
+  private var mediaType: String = DefaultConstants.MEDIA_TYPE_ALL
 
   override fun onCreate(savedInstanceState: Bundle?) {
     val context: Context = this
@@ -70,19 +70,22 @@ class LibraryActivity : AppCompatActivity() {
     // Init default folder name
     selectedFolderName = getString(R.string.default_folder_name) + arrowDownString
 
-    mediaHelper = MediaHelper(context)
-    // load input options
+    // Load input options
     val options: RnMediaPickerOptions? = intent.getParcelableExtra(IntentConstants.PICKER_OPTIONS)
     if (options != null) {
       isMultipleSelection = options.isMultipleSelection
       maxSelection = options.maxSelection
+      mediaType = options.mediaType
     }
 
-    // using viewBinding to inflate library
+    // Init mediaHelper using options
+    mediaHelper = MediaHelper(context, mediaType)
+
+    // Using viewBinding to inflate library
     viewBinding = LibraryActivityBinding.inflate(layoutInflater)
     setContentView(viewBinding.root)
 
-    // initialize the adapter and click
+    // Initialize the adapter and click
     viewBinding.mediaRecyclerView.layoutManager = GridLayoutManager(context, 3)
     mediaAdapter = MediaAdapter(context, emptyList(), { mediaItem ->
       Log.d("CLICK", "Uri: " + mediaItem.uri.toString())
@@ -93,7 +96,7 @@ class LibraryActivity : AppCompatActivity() {
     })
     viewBinding.mediaRecyclerView.adapter = mediaAdapter
 
-    // initialize multi-select mode and change-mode click
+    // Initialize multi-select mode and change-mode click
     // isMultipleSelection = true
     updateSelectionMode()
     // viewBinding.mcvSelectMultipleSingle.setOnClickListener {
@@ -101,13 +104,13 @@ class LibraryActivity : AppCompatActivity() {
     //   updateSelectionMode()
     // }
 
-    // initialize back button click
+    // Initialize back button click
     viewBinding.tvBack.setOnClickListener {
       setResult(Activity.RESULT_CANCELED)
       finish()
     }
 
-    // get and set items from intent data
+    // Get and set items from intent data
     val receivedItems: ArrayList<MediaItem> =
       intent.getParcelableArrayListExtra(IntentConstants.SELECTED_ITEMS) ?: arrayListOf()
     mediaAdapter.setSelectedItems(receivedItems)
