@@ -8,8 +8,8 @@ export default function App() {
 
   const onPress1 = () => {
     const options: IOptions = {
-      isMultipleSelection: false,
-      maxSelection: 1,
+      isMultipleSelection: true,
+      maxSelection: 10,
       mediaType: 'all',
     };
     launchLibrary(options).then((results: IResponse) => {
@@ -27,8 +27,18 @@ export default function App() {
       <Button title={'Launch'} onPress={() => onPress1()} />
       {results.map((result, index) => (
         <View key={`result-${index}`} style={styles.row}>
-          <Image style={styles.image} source={{ uri: result.mediaUri}} />
-          <Text style={styles.url}>{result.mediaUri}</Text>
+          <Image resizeMode={"center"} style={styles.image} source={{ uri: result.uri}} />
+          <View style={styles.infoView}>
+            <Text style={styles.url}>name: {result.name}</Text>
+            <Text style={styles.url}>type: {result.type}</Text>
+            <Text style={styles.url}>mimeType: {result.mimeType}</Text>
+            <Text style={styles.url}>size: {result.size}</Text>
+            <Text style={styles.url}>width: {result.width}</Text>
+            <Text style={styles.url}>height: {result.height}</Text>
+            <Text style={styles.url}>datetime: {result.datetime}</Text>
+            <Text style={styles.url}>duration: {result.duration}</Text>
+            <Text style={styles.url}>bitrate: {result.bitrate}</Text>
+          </View>
         </View>
       ))}
     </View>
@@ -50,10 +60,13 @@ const styles = StyleSheet.create({
   },
   image: {
     aspectRatio: 1,
-    width: 100,
+    width: 200,
+  },
+  infoView: {
+    flexDirection: 'column',
   },
   url: {
-    padding: 20,
+    paddingLeft: 10,
     fontSize: 16,
     color: '#FFFFFF',
   },
