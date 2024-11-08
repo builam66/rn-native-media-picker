@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button, Image } from 'react-native';
+import { StyleSheet, View, Text, Button, Image, Platform } from 'react-native';
 import { multiply, launchLibrary, IOptions } from 'rn-native-media-picker';
 import { IAsset, IResponse } from "../../src/type";
 
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop: Platform.OS === 'ios' ? 50 : 20,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -68,6 +69,6 @@ const styles = StyleSheet.create({
   url: {
     paddingLeft: 10,
     fontSize: 16,
-    color: '#FFFFFF',
+    color: 'red',
   },
 });

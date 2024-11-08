@@ -14,4 +14,8 @@ object DefaultConstants {
   // Constants for default folder ID
   const val ALL_MEDIA_FOLDER_ID = "all_media"
   const val ALL_VIDEOS_FOLDER_ID = "all_videos"
+
+  // Constants for response
+  const val RES_RESULT_CODE = "resultCode"
+  const val RES_ASSETS = "assets"
 }

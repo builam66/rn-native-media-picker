@@ -9,13 +9,12 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableArray
-import com.facebook.react.bridge.WritableMap
 import com.rnmediapicker.constants.DefaultConstants
 import com.rnmediapicker.constants.IntentConstants
 import com.rnmediapicker.constants.ResultConstants
 import com.rnmediapicker.library.LibraryActivity
-import com.rnmediapicker.library.MediaItem
+import com.rnmediapicker.library.MediaAsset
+import com.rnmediapicker.library.MediaPickerResponse
 
 class RnMediaPickerModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -55,8 +54,8 @@ class RnMediaPickerModule(reactContext: ReactApplicationContext) :
       }
 
       if (resultCode == Activity.RESULT_OK && data != null) {
-        val selectedItems: ArrayList<MediaItem> = data.getParcelableArrayListExtra(IntentConstants.SELECTED_ITEMS) ?: arrayListOf()
-        libraryPickerPromise?.resolve(convertResponse(ResultConstants.SUCCESS, selectedItems))
+        val response: MediaPickerResponse? = data.getParcelableExtra(IntentConstants.SELECTED_ITEMS)
+        libraryPickerPromise?.resolve(convertResponse(ResultConstants.SUCCESS, response))
       } else {
         libraryPickerPromise?.resolve(convertResponse(ResultConstants.OTHER_ERROR, null))
       }
@@ -91,18 +90,32 @@ class RnMediaPickerModule(reactContext: ReactApplicationContext) :
     )
   }
 
-  private fun convertResponse(resultCode: Int, mediaItems: List<MediaItem>?): WritableMap {
+  private fun convertResponse(resultCode: Int, response: MediaPickerResponse?): ReadableMap {
     val assets = Arguments.createArray().apply {
-      mediaItems?.forEach { item ->
-        pushMap(Arguments.createMap().apply {
-          putString("mediaUri", item.uri.toString())
-          putString("mediaType", item.type.toString())
-        })
+      response?.assets?.forEach { item ->
+        // Convert MediaAsset to ReadableMap
+        val readableMap = Arguments.createMap()
+        // Use reflection or data class introspection to iterate through properties
+        for (property in MediaAsset::class.java.declaredFields) {
+          property.isAccessible = true
+          val propertyName = property.name
+          // Add property to ReadableMap based on its type
+          when (val propertyValue = property.get(item)) {
+            is String -> readableMap.putString(propertyName, propertyValue)
+            is Int -> readableMap.putInt(propertyName, propertyValue)
+            is Double -> readableMap.putDouble(propertyName, propertyValue)
+            is Boolean -> readableMap.putBoolean(propertyName, propertyValue)
+            // Handle other types as needed
+            null -> readableMap.putNull(propertyName)
+          }
+        }
+        // Add the ReadableMap to the assets array
+        pushMap(readableMap)
       }
     }
     return Arguments.createMap().apply {
-      putInt("resultCode", resultCode)
-      putArray("assets", assets)
+      putInt(DefaultConstants.RES_RESULT_CODE, resultCode)
+      putArray(DefaultConstants.RES_ASSETS, assets)
     }
   }
 

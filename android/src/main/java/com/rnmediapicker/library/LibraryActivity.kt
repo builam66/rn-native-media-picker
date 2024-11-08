@@ -118,14 +118,16 @@ class LibraryActivity : AppCompatActivity() {
     viewBinding.tvDone.setOnClickListener {
       // Get selected items from the adapter
       val selectedItems = mediaAdapter.getSelectedItems()
-      val selectedItemsArrayList = ArrayList(selectedItems)
 
       // Log the selected items for debugging
-      Log.e(TAG, "ITEMS: $selectedItemsArrayList")
+      Log.e(TAG, "ITEMS: $selectedItems")
+
+      // Create a Parcelable response from selected items
+      val parcelableResponse = Utils.getParcelableResponse(context, selectedItems)
 
       // Create an intent and put the selected items
       val resultIntent = Intent().apply {
-        putParcelableArrayListExtra(IntentConstants.SELECTED_ITEMS, selectedItemsArrayList)
+        putExtra(IntentConstants.SELECTED_ITEMS, parcelableResponse)
       }
 
       // Set the result and finish the activity

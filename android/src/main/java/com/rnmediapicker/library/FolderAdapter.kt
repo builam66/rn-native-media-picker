@@ -78,10 +78,20 @@ class FolderAdapter(
 
             // Handle folder item click events
             binding.root.setOnClickListener {
+                // Store the previous selected folder ID
+                val previousSelectedFolderId = selectedFolderId
 
-                // Update the selected folder ID and notify the adapter to refresh the UI
+                // Update the selected folder ID
                 selectedFolderId = folderItem.folderId
-                notifyDataSetChanged()
+
+                // Notify the adapter about the changes
+                if (previousSelectedFolderId != null) {
+                  val previousSelectedFolderPosition = folderList.indexOfFirst { it.folderId == previousSelectedFolderId }
+                  if (previousSelectedFolderPosition != -1) {
+                    notifyItemChanged(previousSelectedFolderPosition)
+                  }
+                }
+                notifyItemChanged(adapterPosition)
 
                 // Trigger the callback for the folder click event
                 onFolderClick(folderItem)

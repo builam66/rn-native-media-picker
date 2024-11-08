@@ -10,6 +10,14 @@ export interface IResponse {
 }
 
 export interface IAsset {
-  mediaUri: string;
-  mediaType: string;
+  uri: string;
+  type: string;
+  mimeType: string;
+  name: string;
+  size: number;
+  width: number | undefined;
+  height: number | undefined;
+  datetime: string | undefined;
+  duration: number | undefined;
+  bitrate: number | undefined;
 }

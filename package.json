@@ -33,7 +33,8 @@
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
-    "!**/.*"
+    "!**/.*",
+    "rn-native-media-picker.podspec"
   ],
   "author": "Lam Bui Phuc (https://github.com/builam66)",
   "homepage": "https://github.com/builam66/rn-native-media-picker",

@@ -6,6 +6,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.rnmediapicker.databinding.MediaItemBinding
@@ -58,13 +59,19 @@ class MediaAdapter(
   }
 
   fun clearMediaItems() {
+    val oldSize = mediaList.size
     mediaList = emptyList()
-    notifyDataSetChanged()
+    notifyItemRangeRemoved(0, oldSize)
   }
 
   fun updateMediaItems(newMediaList: List<MediaItem>) {
+    // Calculate the difference between the old and new lists using DiffUtil (optional)
+    val diffCallback = MediaItemDiffCallback(mediaList, newMediaList)
+    val diffResult = DiffUtil.calculateDiff(diffCallback)
+
     mediaList = newMediaList
-    notifyDataSetChanged()
+    // Dispatch updates using DiffUtil (optional)
+    diffResult.dispatchUpdatesTo(this)
   }
 
   inner class MediaViewHolder(private val binding: MediaItemBinding) :
@@ -189,7 +196,7 @@ class MediaAdapter(
         }
       }
       onSelectionChanged(selectedItems.size)
-      notifyDataSetChanged()
+      notifyItemChanged(adapterPosition)
     }
   }
 
@@ -204,7 +211,7 @@ class MediaAdapter(
     }
     this.isMultiSelectMode = isMultiSelectMode
     this.maxSelection = maxSelection
-    notifyDataSetChanged()
+    notifyItemRangeChanged(0, mediaList.size)
   }
 
   fun setSelectedItems(items: List<MediaItem>) {
@@ -212,7 +219,7 @@ class MediaAdapter(
     // Add the selected items URIs to the selected items set
     selectedItems.addAll(items.mapNotNull { it.uri })
     // Notify the adapter to refresh the views
-    notifyDataSetChanged()
+    notifyItemRangeChanged(0, mediaList.size)
     // Notify about the selection count change
     onSelectionChanged(selectedItems.size)
   }
